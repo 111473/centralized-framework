@@ -1,0 +1,3 @@
+runners\PythonScriptRunner.class
+runners\SeleniumTestRunner.class
+runners\PlaywrightTestRunner.class

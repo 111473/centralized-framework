@@ -1,0 +1,6 @@
+com\testautomation\framework\utils\ProjectResolver.class
+com\testautomation\framework\report\AllureReportManager.class
+com\testautomation\framework\listeners\TestListener.class
+com\testautomation\framework\logger\LoggerWrapper.class
+com\testautomation\framework\utils\ConfigManager.class
+com\testautomation\framework\manager\DriverManager.class

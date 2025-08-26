@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/GitHub/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/GitHub/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/account-opening/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/account-opening/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/framework-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/loan-account/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/loan-account/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/playwright-test-runner/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/playwright-test-runner/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/playwright-tests/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/playwright-tests/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/reimbursement/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/reimbursement/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/selenium-test-runner/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/selenium-test-runner/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/selenium-tests/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/selenium-tests/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-runner/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-runner/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

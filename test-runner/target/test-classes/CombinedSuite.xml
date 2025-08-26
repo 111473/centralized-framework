@@ -1,0 +1,26 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Combined Selenium and Playwright Suite" parallel="tests" thread-count="2">
+
+    <listeners>
+        <listener class-name="com.testautomation.framework.listeners.TestListener"/>
+    </listeners>
+
+    <test name="Selenium Tests">
+        <classes>
+            <class name="runners.SeleniumTestRunner"/>
+        </classes>
+    </test>
+
+    <test name="Playwright Tests">
+        <classes>
+            <class name="runners.PlaywrightTestRunner"/>
+        </classes>
+    </test>
+
+    <test name="Python Test">
+        <classes>
+            <class name="runners.PythonScriptRunner"/>
+        </classes>
+    </test>
+
+</suite>

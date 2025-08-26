@@ -1,0 +1,6 @@
+com\testautomation\framework\hooks\SeleniumHooks.class
+com\testautomation\framework\Finder\SmartElementFinder$Locator.class
+com\testautomation\framework\smartlocator\LocatorLogWriter.class
+com\testautomation\framework\gpt\LocatorRepairAssistant.class
+com\testautomation\framework\factory\SeleniumDriverFactory.class
+com\testautomation\framework\Finder\SmartElementFinder.class

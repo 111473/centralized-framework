@@ -1,0 +1,24 @@
+{
+  "projects": {
+    "github": {
+      "baseUrl": "https://github.com/login",
+      "browser": "chrome",
+      "headless": false
+    },
+    "account-opening": {
+      "baseUrl": "https://example.com/open",
+      "browser": "firefox",
+      "headless": true
+    },
+    "reimbursement": {
+      "baseUrl": "https://github.com/login",
+      "browser": "chrome",
+      "headless": true
+    },
+    "forex": {
+      "baseUrl": "https://example.com/forex",
+      "browser": "edge",
+      "headless": true
+    }
+  }
+}

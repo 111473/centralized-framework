@@ -1,0 +1,267 @@
+# ─── ENVIRONMENT STAGE SETTINGS ────────────────────────────────
+
+[stages.dev]
+region              = "us-east-1"
+account_id          = "149536486629"
+stage_name          = "dev"
+secrets_file        = ".env"
+
+[stages.prod]
+region              = "us-east-1"
+account_id          = "149536486629"
+stage_name          = "dev"
+secrets_file        = ".env"
+
+# ─── VARIABLES ─────────────────────────────────────────────────
+
+[variables.dev]
+key_id             = "804f43f6-8d41-4b91-922c-3876aa7f61b5"
+parameter          = "myapp/access-token"
+
+# ─── IAM ROLES ─────────────────────────────────────────────────
+
+[iam_roles.user]
+role_name                 = "user-authorizer-role"
+trust_policy_path         = "policies/trust-policy.json"
+
+[iam_roles.user.managed_policies]
+basic_execution           = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+
+[iam_roles.user.inline_policies.ssm_policy]
+action                    = "ssm:GetParameter"
+resource                  = "arn:aws:ssm:{region}:{account_id}:parameter/{parameter}"
+
+[iam_roles.user.inline_policies.kms_policy]
+action                    = ["kms:Decrypt"]
+resource                  = "arn:aws:kms:{region}:{account_id}:key/{key_id}"
+
+[iam_roles.product]
+role_name                 = "product-role"
+trust_policy_path         = "policies/trust-policy.json"
+
+[iam_roles.product.managed_policies]
+basic_execution           = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+cloudwatch                = "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+dynamodb                  = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+
+[iam_roles.http_user]
+role_name                 = "http-user-auth-role"
+trust_policy_path         = "policies/trust-policy.json"
+
+[iam_roles.http_user.managed_policies]
+basic_execution           = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+
+# ─── LAMBDA FUNCTION DEFINITIONS ───────────────────────────────
+
+[lambda.auth_token.service]
+function_name             = "user-auth-token-service"
+role_name                 = "user-authorizer-role"
+handler                   = "lambda_function.lambda_handler"
+runtime                   = "python3.13"
+zip_file                  = "handler/authorizer/token/function.zip"
+
+[lambda.auth_request.service]
+function_name             = "user-auth-request-service"
+role_name                 = "user-authorizer-role"
+handler                   = "lambda_function.lambda_handler"
+runtime                   = "python3.13"
+zip_file                  = "handler/authorizer/request/function.zip"
+
+[lambda.backend.service]
+function_name             = "product-backend-service"
+role_name                 = "product-role"
+handler                   = "lambda_function.lambda_handler"
+runtime                   = "python3.13"
+zip_file                  = "handler/product/function.zip"
+
+[lambda.http_iam_auth.service]
+function_name             = "http-iam-auth-service"
+role_name                 = "user-authorizer-role"
+handler                   = "lambda_function.lambda_handler"
+runtime                   = "python3.13"
+zip_file                  = "handler/authorizer/iam/function.zip"
+
+[lambda.http_simple_auth.service]
+function_name             = "http-simple-auth-service"
+role_name                 = "http-user-auth-role"
+handler                   = "lambda_function.lambda_handler"
+runtime                   = "python3.13"
+zip_file                  = "handler/authorizer/simple/function.zip"
+
+# ─── COGNITO USER POOL DEFINITIONS ──────────────────────────────────
+
+[cognito.user_pool]
+pool_name                 = "my-user-pool-${timestamp}"
+sign_in_identifiers       = ["email", "username"]
+required_attributes       = ["email", "name"]
+delete_protection         = "Active"
+
+[cognito.user_pool.password_policy ]
+MinimumLength             = 8
+RequireUppercase          = true
+RequireLowercase          = true
+RequireNumbers            = true
+RequireSymbols            = true
+
+[cognito.user_pool.user_verification]
+method                    = "Preferred"
+email_message             = "Your verification code is {####}"
+email_subject             = "Verify your email"
+sms_message               = "Your code is {####}"
+
+[cognito.user_pool.domain]
+domain                    = "my-app-domain-${timestamp}"
+
+[cognito.user_pool.sign_in]
+username_config           = false
+
+[cognito.user_pool.user_management.group]
+group_name                = "Admins"
+group_description         = "Administrators with elevated permissions"
+group_precedence          = 1
+
+[cognito.user_pool.user_management.user]
+username                  = "logan"
+email_address             = "neilherbertagtuca@gmail.com"
+email_verified            = true
+
+# ─── REST API GATEWAY DEFINITIONS ───────────────────────────────────
+
+[apis.product_rest_api]
+name                      = "product-rest-api-1145"
+lambda_function_name      = "product-backend-service"
+api_type                  = "REST"
+api_creation_mode         = "new"
+description               = "REST API for product service"
+endpoint_type             = "REGIONAL"
+
+[apis.product_rest_api.authorizers.token]
+authorizer_function_name  = "user-auth-token-service"
+provider                  = "LAMBDA"
+type                      = "TOKEN"
+identity_source           = "method.request.header.authorizationToken"
+ttl_seconds               = 0
+
+[apis.product_rest_api.authorizers.request]
+authorizer_function_name  = "user-auth-request-service"
+provider                  = "LAMBDA"
+type                      = "REQUEST"
+identity_source           = ["method.request.querystring.authorizationToken"]
+ttl_seconds               = 0
+
+#[apis.product_rest_api.authorizer.cognito]
+#provider                  = "COGNITO"
+#user_pool_arns            = ["arn:aws:cognito-idp:us-east-1:123456789012:userpool/us-east-1_Abc123456"]
+#identity_source           = "method.request.header.Authorization"
+#ttl_seconds               = 300
+
+# ─── REST API GATEWAY RESOURCE DEFINITIONS ───────────────────────────────────
+
+[apis.product_rest_api.resources.status]
+resource_path            = "/status"
+cors_enabled             = true
+integration_type         = "LAMBDA"
+methods                  = ["GET", "OPTIONS"]
+require_api_key          = ["GET"]
+authorization            = { GET = "user-auth-token-service" }
+request_validator        = { GET = "None" }
+
+[apis.product_rest_api.resources.status1]
+resource_path            = "/status/status1"
+cors_enabled             = false
+integration_type         = "LAMBDA"
+methods                  = ["GET", "OPTIONS"]
+require_api_key          = ["GET"]
+authorization            = { GET = "user-auth-token-service" }
+request_validator        = { GET = "None" }
+
+[apis.product_rest_api.resources.product]
+resource_path            = "/product"
+cors_enabled             = true
+integration_type         = "LAMBDA"
+methods                  = ["GET", "POST", "PATCH", "DELETE", "OPTIONS"]
+require_api_key          = ["POST"]
+authorization            = { GET = "user-auth-token-service", POST = "user-auth-request-service", PATCH = "user-auth-request-service", DELETE = "user-auth-token-service" }
+request_validator        = { GET = "None", POST = "None", PATCH = "None", DELETE = "None", OPTIONS = "None" }
+
+[apis.product_rest_api.resources.products]
+resource_path            = "/products"
+cors_enabled             = true
+integration_type         = "LAMBDA"
+methods                  = ["GET", "OPTIONS"]
+require_api_key          = ["GET"]
+authorization            = { GET = "user-auth-request-service" }
+request_validator        = { GET = "None", OPTIONS = "None" }
+
+# ─── API GATEWAY USAGE PLAN ────────────────────────────────────────────────
+
+[apis.product_rest_api.usage_plan]
+rate_limit               = 100
+burst_limit              = 20
+limit                    = 1000
+period                   = "MONTH"
+
+# ─── HTTP API GATEWAY DEFINITIONS ───────────────────────────────────
+
+[apis.product_http_api]
+name                     = "product-http-api-1145"
+api_type                 = "HTTP"
+integration_target       = "HTTP URI"
+url                      = "http://petstore-demo-endpoint.execute-api.com/petstore/pets"
+http_method              = "GET"
+
+##########Uncomment if needed
+#[apis.product_http_api]
+#name                     = "product-http-api"
+#api_type                 = "HTTP"
+#lambda_function_name     = "LAMBDA"
+#invoke_permission        = ""
+
+[apis.product_http_api.cors]
+allow_origins            = ["*"]
+allow_methods            = ["GET", "POST"]
+allow_headers            = ["Authorization", "Content-Type"]
+max_age                  = 3600
+
+# ─── HTTP API GATEWAY AUTHORIZERS ──────────────────────────────
+
+[apis.product_http_api.authorizers.lambda_iam]
+authorizer_function_name = "http-iam-auth-service"
+type                     = "LAMBDA"
+response_mode            = "iam"
+identity_source          = "$request.header.Authorization"
+ttl_seconds              = 0
+
+[apis.product_http_api.authorizers.lambda_simple]
+authorizer_function_name = "http-simple-auth-service"
+type                     = "LAMBDA"
+response_mode            = "simple"
+identity_source          = "$request.header.Authorization"
+ttl_seconds              = 0
+
+# ─── HTTP API GATEWAY ROUTES ───────────────────────────────────
+
+[apis.product_http_api.routes.status]
+resource_path           = "/status"
+methods                 = ["GET"]
+authorization           = { GET = "lambda_iam" }
+cors_enabled            = true
+
+[apis.product_http_api.routes.status]
+resource_path           = "/status/status1"
+methods                 = ["GET"]
+authorization           = { GET = "lambda_simple" }
+cors_enabled            = false
+
+
+[apis.product_http_api.routes.product]
+resource_path           = "/product"
+methods                 = ["GET", "DELETE", "PATCH", "POST"]
+authorization           = { GET = "lambda_simple", DELETE = "lambda_iam", PATCH = "lambda_iam", POST = "lambda_simple" }
+cors_enabled            = true
+
+[apis.product_http_api.routes.products]
+resource_path           = "/products"
+methods                 = ["GET"]
+authorization           = { GET = "lambda_simple" }
+cors_enabled            = true

@@ -1,0 +1,11 @@
+{
+  "activeProject": "github",
+  "projects": {
+    "github": {
+      "testType": "selenium"
+    },
+    "reimbursement": {
+      "testType": "playwright"
+    }
+  }
+}

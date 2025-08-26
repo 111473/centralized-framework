@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/framework-core/framework-core.iml" filepath="$PROJECT_DIR$/framework-core/framework-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/loan-account/loan-account.iml" filepath="$PROJECT_DIR$/loan-account/loan-account.iml" />
+      <module fileurl="file://$PROJECT_DIR$/patient-management-api-test/patient-management-api-test.iml" filepath="$PROJECT_DIR$/patient-management-api-test/patient-management-api-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/reimbursement/reimbursement.iml" filepath="$PROJECT_DIR$/reimbursement/reimbursement.iml" />
+      <module fileurl="file://$PROJECT_DIR$/reimbursement-api/reimbursement-api.iml" filepath="$PROJECT_DIR$/reimbursement-api/reimbursement-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test-runner.iml" filepath="$PROJECT_DIR$/test-runner.iml" />
+    </modules>
+  </component>
+</project>

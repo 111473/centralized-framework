@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="github" />
+        <module name="account-opening" />
+        <module name="framework-core" />
+        <module name="reimbursement" />
+        <module name="playwright-tests" />
+        <module name="test-runner" />
+        <module name="selenium-tests" />
+        <module name="loan-account" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="GitHub" target="17" />
+      <module name="playwright-test-runner" target="11" />
+      <module name="selenium-test-runner" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
