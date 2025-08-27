@@ -91,6 +91,8 @@ public class SmartElementFinder {
         if (key == null || key.isEmpty()) {
             throw new IllegalStateException("OPENAI_API_KEY is not set. Please configure it as an environment variable.");
         }
+
+        System.out.println("KEY>>>>:" + key);
         return key;
     }
 
